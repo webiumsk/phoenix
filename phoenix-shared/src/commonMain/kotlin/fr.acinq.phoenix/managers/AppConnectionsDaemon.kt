@@ -122,7 +122,7 @@ class AppConnectionsDaemon(
                                     logger.info { "ignored electrum connection opportunity because no server is configured yet" }
                                 } else {
                                     logger.info { "connecting to electrum server=$electrumServerAddress" }
-                                    electrumClient.connect(electrumServerAddress)
+                                    electrumClient.start(electrumServerAddress)
                                 }
                                 _lastElectrumServerAddress.value = electrumServerAddress
                             }
@@ -132,7 +132,7 @@ class AppConnectionsDaemon(
                         electrumConnectionJob?.let { job ->
                             logger.debug { "disconnecting from electrum" }
                             job.cancel()
-                            electrumClient.disconnect()
+                            electrumClient.stop()
                         }
                         electrumConnectionJob = null
                     }
@@ -329,7 +329,7 @@ class AppConnectionsDaemon(
     private fun connectionLoop(
         name: String,
         statusStateFlow: StateFlow<Connection>,
-        connect: () -> Unit
+        connect: suspend CoroutineScope.() -> Unit
     ) = launch {
         var pause = Duration.ZERO
         statusStateFlow.collect {
