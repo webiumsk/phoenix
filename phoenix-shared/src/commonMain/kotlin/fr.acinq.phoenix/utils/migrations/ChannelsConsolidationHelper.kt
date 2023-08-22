@@ -26,6 +26,7 @@ import fr.acinq.lightning.channel.states.Closing
 import fr.acinq.lightning.channel.states.Normal
 import fr.acinq.lightning.io.WrappedChannelCommand
 import fr.acinq.lightning.utils.msat
+import fr.acinq.phoenix.PhoenixBusiness
 import fr.acinq.phoenix.data.LocalChannelInfo
 import fr.acinq.phoenix.managers.PeerManager
 import fr.acinq.phoenix.utils.Parser
@@ -64,6 +65,18 @@ object ChannelsConsolidationHelper {
     }
 
     suspend fun consolidateChannels(
+        biz: PhoenixBusiness,
+        ignoreDust: Boolean
+    ): ChannelsConsolidationResult {
+        return consolidateChannels(
+            loggerFactory = biz.loggerFactory,
+            chain = biz.chain,
+            peerManager = biz.peerManager,
+            ignoreDust = ignoreDust
+        )
+    }
+
+    suspend fun consolidateChannels(
         loggerFactory: LoggerFactory,
         chain: NodeParams.Chain,
         peerManager: PeerManager,
@@ -91,7 +104,10 @@ object ChannelsConsolidationHelper {
 
             // check dust
             val channelsToConsolidate = allChannels.filter { it.state is Normal }
-            val dustChannels = channelsToConsolidate.filter { (it.localBalance ?: 0.msat) < 546_000.msat }
+            val dustChannels = channelsToConsolidate.filter {
+                val balance = it.localBalance ?: 0.msat
+                balance > 0.msat && balance < 546_000.msat
+            }
             if (!ignoreDust) {
                 if (dustChannels.isNotEmpty()) {
                     log.info { "aborting: ${dustChannels.size}/${channelsToConsolidate.size} dust channels" }
