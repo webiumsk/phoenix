@@ -129,7 +129,7 @@ struct MainView_BigPrimary: View {
 				Label {
 					Text("Receive")
 						.font(.title2.weight(.medium))
-						.foregroundColor(.white)
+						.foregroundColor(canMergeChannelsForSplicing ? .appNegative : .white)
 				} icon: {
 					Image("ic_receive_resized")
 						.resizable()
@@ -155,7 +155,7 @@ struct MainView_BigPrimary: View {
 				Label {
 					Text("Send")
 						.font(.title2.weight(.medium))
-						.foregroundColor(.white)
+						.foregroundColor(canMergeChannelsForSplicing ? .appNegative : .white)
 				} icon: {
 					Image("ic_scan_resized")
 						.resizable()
