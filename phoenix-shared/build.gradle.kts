@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import java.io.ByteArrayOutputStream
+import co.touchlab.skie.configuration.FlowInterop
 
 plugins {
     kotlin("multiplatform")
@@ -8,6 +9,7 @@ plugins {
     if (System.getProperty("includeAndroid")?.toBoolean() == true) {
         id("com.android.library")
     }
+    id("co.touchlab.skie") version "0.5.5"
 }
 
 val includeAndroid = System.getProperty("includeAndroid")?.toBoolean() ?: false
@@ -59,7 +61,6 @@ kotlin {
         it.binaries {
             framework {
                 baseName = "PhoenixShared"
-                embedBitcode = Framework.BitcodeEmbeddingMode.DISABLE
             }
             configureEach {
                 it.compilations.all {
@@ -96,6 +97,8 @@ kotlin {
                 implementation("com.squareup.sqldelight:coroutines-extensions:${Versions.sqlDelight}")
                 // kermit logger
                 implementation("co.touchlab:kermit:1.3.0")
+                // SKEI
+                implementation("co.touchlab.skie:configuration-annotations:0.5.5")
                 // file system
                 api("org.kodein.memory:kodein-memory-files:${Versions.kodeinMemory}")
             }
@@ -210,5 +213,16 @@ if (includeAndroid) {
         }
 
         sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    }
+}
+
+skie {
+    analytics {
+        disableUpload.set(true)
+    }
+    features {
+        group("fr.acinq.phoenix.utils.flow") {
+            FlowInterop.Enabled(false)
+        }
     }
 }
