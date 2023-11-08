@@ -23,6 +23,7 @@ import fr.acinq.lightning.payment.PaymentRequest
 import fr.acinq.phoenix.data.lnurl.Lnurl.Companion.format
 import fr.acinq.phoenix.data.lnurl.Lnurl.Companion.log
 import fr.acinq.phoenix.db.cloud.b64Decode
+import fr.acinq.phoenix.utils.loggerExtensions.*
 import io.ktor.http.*
 import kotlinx.serialization.json.*
 
