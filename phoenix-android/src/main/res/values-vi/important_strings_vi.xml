@@ -1,0 +1,281 @@
+<!--
+  ~ Copyright 2023 ACINQ SAS
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+  ~ This file contains string resources related to important messages in the app, and should be translated as a priority.
+  ~ It should be kept as small as possible.
+  ~
+  ~ Most technical resource strings should stay in the default `strings.xml` file.
+-->
+<resources>
+    <!-- system notifications -->
+    <string name="notif_headless_title_default">Phoenix đang chạy ở chế độ nền</string>
+    <string name="notif_headless_received">Đã nhận được +%1$s</string>
+    <string name="notif_pending_settlement_title">Hãy bắt đầu Phoenix</string>
+    <string name="notif_pending_settlement_message">Một thỏa thuận giải quyết sắp tới đang chờ xử lý.</string>
+    <string name="notif_missed_title">Thanh toán đến bị bỏ lỡ</string>
+    <string name="notif_missed_unavailable">Phoenix không thể khởi động ở chế độ nền.</string>
+    <string name="notif_rejected_deposit_title">Tiền gửi trên chuỗi đang chờ xử lý (+%1$s)</string>
+    <string name="notif_rejected_payment_title">Thanh toán bị từ chối (+%1$s)</string>
+    <string name="notif_rejected_policy_disabled">Quản lý kênh tự động bị tắt. Nhấn để biết chi tiết.</string>
+    <string name="notif_rejected_policy_disabled_timeout">Quản lý kênh tự động bị tắt. Khoản tiền gửi này sẽ hết hạn vào %1$s.</string>
+    <string name="notif_rejected_over_absolute">Phí là %1$s, nhưng phí tối đa của bạn được đặt thành %2$s. Nhấn để biết chi tiết.</string>
+    <string name="notif_rejected_over_absolute_timeout">Phí là %1$s, nhưng phí tối đa của bạn được đặt thành %2$s. Khoản tiền gửi này sẽ hết hạn vào %3$s.</string>
+    <string name="notif_rejected_over_relative">Khoản phí là %1$s, lớn hơn %2$s%% số tiền nhận được. Nhấn để biết chi tiết.</string>
+    <string name="notif_rejected_over_relative_timeout">Khoản phí là %1$s, lớn hơn %2$s%% số tiền nhận được. Khoản tiền gửi này sẽ hết hạn vào %3$s.</string>
+    <string name="notif_rejected_channels_initializing">Các kênh của bạn đang khởi tạo và không thể chấp nhận khoản thanh toán đó. Thử lại sau.</string>
+    <string name="notif_watcher_revoked_commit_title">Hãy bắt đầu Phoenix</string>
+    <string name="notif_watcher_revoked_commit_message">Một số kênh của bạn có thể đã đóng cửa.</string>
+    <!-- settings list -->
+    <string name="settings_general_title">Tổng quan</string>
+    <string name="settings_security_title">Quyền riêng tư &amp; Bảo mật</string>
+    <string name="settings_advanced_title">Trình độ cao</string>
+    <string name="settings_danger_title">Khu vực nguy hiểm</string>
+    <string name="settings_display_prefs">Trưng bày</string>
+    <string name="settings_wallet_info">Thông tin ví</string>
+    <string name="settings_liquidity_policy">Quản lí kênh</string>
+    <string name="settings_display_seed">Cụm từ khôi phục</string>
+    <string name="settings_access_control">Kiểm soát truy cập</string>
+    <string name="settings_list_channels">Kênh thanh toán</string>
+    <string name="settings_logs">Nhật ký</string>
+    <string name="settings_electrum">Máy chủ Electrum</string>
+    <string name="settings_reset_wallet">Đặt lại ví</string>
+    <string name="settings_mutual_close">Đóng kênh</string>
+    <string name="settings_force_close">Buộc đóng kênh</string>
+    <string name="settings_tor">Tor</string>
+    <string name="settings_about">Về</string>
+    <string name="settings_payment_settings">Các lựa chọn thanh toán</string>
+    <string name="settings_payment_history">Lịch sử thanh toán</string>
+    <string name="settings_notifications">Thông báo</string>
+    <!-- home: bottom menu -->
+    <string name="menu_settings">Cài đặt</string>
+    <string name="menu_send">Gửi</string>
+    <string name="menu_receive">Nhận được</string>
+    <!-- init wallet / automated wallet creation -->
+    <string name="initwallet_create">Tạo ví mới</string>
+    <string name="initwallet_restore">Khôi phục ví của tôi</string>
+    <string name="restore_disclaimer_message">Phoenix chỉ có thể khôi phục các khoản tiền ngoài chuỗi được quản lý bởi ứng dụng này.\n\nNhập hạt giống KHÔNG do Phoenix tạo sẽ không khôi phục bất kỳ khoản tiền nào.\n\nNgoài ra, vui lòng đảm bảo rằng bạn chưa chạy một ví Phoenix khác bằng cùng một hạt giống.</string>
+    <string name="restore_disclaimer_checkbox">Tôi hiểu.</string>
+    <string name="restore_instructions">Hạt giống trong ví của bạn là một danh sách gồm 12 từ tiếng Anh. Hãy gõ từng từ trong danh sách này vào ô bên dưới.</string>
+    <string name="restore_input_label">Nhập từ #%1$s</string>
+    <string name="restore_input_invalid">Đây không phải là một từ hợp lệ.</string>
+    <string name="restore_seed_valid">Hạt giống này hợp lệ</string>
+    <string name="restore_seed_valid_details">Bây giờ bạn có thể tiếp tục và khôi phục ví của mình</string>
+    <string name="restore_seed_invalid">Hạt giống này không hợp lệ</string>
+    <string name="restore_seed_invalid_details">Hãy chắc chắn rằng bạn đã nhập đúng từ theo đúng thứ tự.</string>
+    <string name="restore_import_button">Khôi phục</string>
+    <!-- upgrade required dialog -->
+    <string name="upgraderequired_title">Cần cập nhật</string>
+    <string name="upgraderequired_message">Phiên bản Phoenix (v%1$s) này không tương thích với ví của bạn. Vui lòng cập nhật hoặc sử dụng phiên bản tương thích.</string>
+    <string name="upgraderequired_button">Cập nhật trên Google Play</string>
+    <!-- receive view: warning about fee/liquidity -->
+    <string name="receive_lightning_warning_title_surefail">Thanh toán sẽ thất bại</string>
+    <string name="receive_lightning_warning_title_mayfail">Thanh toán có thể không thành công</string>
+    <string name="receive_lightning_warning_title_fee_expected">Phí dự kiến</string>
+    <string name="receive_lightning_warning_fee_insufficient_liquidity">Thanh khoản trong nước không đủ.</string>
+    <string name="receive_lightning_warning_fee_policy_disabled_insufficient_liquidity">Thanh khoản trong nước không đủ và bạn đã tắt tính năng quản lý kênh tự động.\nNhấn để định cấu hình.</string>
+    <string name="receive_lightning_warning_fee_within_policy">Có thể cần phải trả khoản phí %1$s (≈ %2$s) để nhận khoản thanh toán này.\nNhấn để định cấu hình.</string>
+    <string name="receive_lightning_warning_fee_exceeds_policy">Phí có thể sẽ cao hơn giới hạn tối đa của bạn (%1$s).\nNhấn để định cấu hình.</string>
+    <string name="receive_onchain_legacy_warning_title">Thông báo di chuyển</string>
+    <string name="receive_onchain_legacy_warning">Đây là địa chỉ mới của bạn. Không sử dụng lại địa chỉ Bitcoin cũ của bạn trước khi di chuyển!</string>
+    <!-- scanning errors -->
+    <string name="scan_error_expired">Hóa đơn này đã hết hạn.</string>
+    <string name="scan_error_already_paid">Khoản thanh toán này đã được thanh toán.</string>
+    <string name="scan_error_invalid_chain">Khoản thanh toán này không sử dụng cùng blockchain với ví của bạn.</string>
+    <string name="scan_error_lnurl_invalid">Không thể xử lý liên kết LNURL này. Hãy chắc chắn rằng nó hợp lệ.</string>
+    <string name="scan_error_lnurl_service_error">Dịch vụ LNURL trả về lỗi.</string>
+    <string name="scan_error_lnurl_unsupported">Loại LNURL này chưa được hỗ trợ.</string>
+    <string name="scan_error_invalid_generic">Dữ liệu này sử dụng định dạng không xác định và không thể xử lý được.</string>
+    <!-- validation -->
+    <string name="validation_below_min">Ít nhất phải là %1$s</string>
+    <string name="validation_above_max">Phải không quá %1$s</string>
+    <!-- closing channels -->
+    <string name="mutualclose_input_label">Địa chỉ Bitcoin</string>
+    <string name="mutualclose_input_instructions">Gửi tất cả tiền vào ví Bitcoin. Tất cả các kênh thanh toán sẽ bị đóng.</string>
+    <string name="mutualclose_confirm_title">Xác nhận đóng</string>
+    <string name="mutualclose_confirm_details">Toàn bộ số tiền sẽ được gửi tới:</string>
+    <string name="forceclose_title">Buộc đóng kênh</string>
+    <string name="forceclose_instructions">
+        This screen allows you to unilaterally close your channels.\n\nThis is not a \"fix-everything\" magic button: it is here as a safety measure and . For example, if your peer (ACINQ) disappears permanently, preventing you from spending your money. In all other cases, .\n\nForce closing channels will cost you money (to cover the on-chain fees) and will cause your funds to be locked for days.\n\n\n\n
+        <b>chỉ nên được sử dụng trong các tình huống cực đoan</b>
+        <b>nếu bạn gặp sự cố với Phoenix, bạn nên liên hệ với bộ phận hỗ trợ</b>
+        <b>Không gỡ cài đặt ứng dụng cho đến khi các kênh của bạn bị đóng hoàn toàn, nếu không bạn sẽ mất tiền.</b>
+        <b>Không sử dụng tính năng này nếu bạn không hiểu đầy đủ chức năng của nó.</b>
+    </string>
+    <string name="forceclose_address_label">Tiền cuối cùng sẽ được gửi đến ví cuối cùng:</string>
+    <string name="forceclose_confirm_title">Xác nhận buộc đóng</string>
+    <string name="forceclose_confirm_details">Tất cả số tiền sẽ được gửi đến ví cuối cùng của bạn sau một thời gian trì hoãn.</string>
+    <string name="forceclose_button">Buộc đóng tất cả các kênh của tôi</string>
+    <!-- in-app notifications -->
+    <string name="inappnotif_migration_from_legacy">Chúc mừng! Ví của bạn đã được cập nhật.</string>
+    <string name="inappnotif_migration_from_legacy_action">Xem những gì đã thay đổi</string>
+    <string name="inappnotif_migration_from_legacy_dialog_title">Địa chỉ Bitcoin trên chuỗi của bạn đã thay đổi</string>
+    <string name="inappnotif_migration_from_legacy_dialog_body">KHÔNG sử dụng lại địa chỉ cũ của bạn! Chúng sẽ không hoạt động nữa.\n\nHãy liên hệ với bộ phận hỗ trợ nếu bạn vô tình làm như vậy.</string>
+    <string name="inappnotif_backup_seed_message">Sao lưu ví của bạn để tránh mất bitcoin.</string>
+    <string name="inappnotif_backup_seed_action">Sao lưu ví của tôi</string>
+    <string name="inappnotif_notification_permission_message">Thông báo bị tắt trong cài đặt Android. Phoenix sẽ không thể thông báo cho bạn khi thanh toán đang được xử lý.</string>
+    <string name="inappnotif_notification_permission_enable">Cho phép</string>
+    <string name="inappnotif_swapin_timeout_message">Khoản tiền gửi sẽ sớm hết hạn.</string>
+    <string name="inappnotif_swapin_timeout_action">Xem chi tiết</string>
+    <string name="inappnotif_watchtower_late_message">Phoenix thường xuyên giám sát blockchain khi ở chế độ nền nhưng đã không thể làm như vậy trong vài ngày qua.\n\nĐảm bảo Android không chặn Phoenix và có thể kết nối với Electrum.</string>
+    <string name="inappnotif_watchtower_late_action">Miễn nhiệm</string>
+    <string name="inappnotif_upgrade_message">Đã có bản cập nhật</string>
+    <string name="inappnotif_upgrade_critical_message">Đã có bản cập nhật quan trọng. Bạn nên cập nhật Phoenix càng sớm càng tốt.</string>
+    <string name="inappnotif_upgrade_button">Cập nhật trên Google Play</string>
+    <string name="inappnotif_mempool_full_message">Mempool Bitcoin đã đầy và phí trên chuỗi rất cao.</string>
+    <string name="inappnotif_mempool_full_action">Xem Phoenix bị ảnh hưởng như thế nào</string>
+    <string name="inappnotif_payment_onchain_pending_title">Tiền trên chuỗi đang chờ xử lý (+%1$s)</string>
+    <string name="inappnotif_payment_rejected_title">Thanh toán bị từ chối (+%1$s)</string>
+    <string name="inappnotif_payment_rejected_disabled">Quản lý kênh tự động bị tắt.</string>
+    <string name="inappnotif_payment_rejected_over_absolute">Phí là %1$s, nhưng phí tối đa của bạn được đặt thành %2$s.</string>
+    <string name="inappnotif_payment_rejected_over_relative">Khoản phí là %1$s, lớn hơn %2$s%% số tiền.</string>
+    <string name="inappnotif_payment_rejected_channel_initializing">Các kênh của bạn vẫn đang khởi chạy và không thể nhận được khoản thanh toán đó.</string>
+    <string name="inappnotif_payment_rejected_tweak_setting">Nhấn để định cấu hình.</string>
+    <string name="inappnotif_payment_rejected_view_wallet">Xem chi tiết</string>
+    <string name="inappnotif_watchtower_nominal_title">báo cáo tháp canh</string>
+    <string name="inappnotif_watchtower_revokedfound_title">cảnh báo tháp canh</string>
+    <string name="inappnotif_watchtower_revokedfound_description">Đã tìm thấy các cam kết bị thu hồi trên %1$s cho (các) kênh: %2$s. Kênh này có thể bị đóng.</string>
+    <!-- settings: display seed -->
+    <string name="displayseed_instructions">
+        The recovery phrase (sometimes called a seed), is a list of 12 English words. It allows you to recover full access to your funds if needed.\n\n\n\n.\nBeware of phishing. The developers of Phoenix will never ask for your seed.\n\n.\nSave it somewhere safe (not on this phone). If you lose your seed and your phone, you\'ve lost your funds.
+        <b>Chỉ có bạn mới sở hữu hạt giống này. Giữ nó riêng tư.</b>
+        <b>Không chia sẻ hạt giống này với bất cứ ai</b>
+        <b>Đừng đánh mất hạt giống này</b>
+    </string>
+    <string name="displayseed_authenticate_button">Hiển thị hạt giống</string>
+    <string name="displayseed_dialog_header">GIỮ AN TOÀN HẠT NÀY.\nKHÔNG CHIA SẺ.</string>
+    <string name="displayseed_backup_notice_header">Bạn chưa sao lưu cụm từ khôi phục của mình!</string>
+    <string name="displayseed_backup_notice_details">Nếu bạn không sao lưu và mất quyền truy cập vào Phoenix, bạn sẽ mất tiền!</string>
+    <string name="displayseed_backup_checkbox">Tôi đã lưu cụm từ khôi phục của mình ở một nơi an toàn.</string>
+    <string name="displayseed_loss_disclaimer_checkbox">Tôi hiểu rằng nếu tôi làm mất điện thoại và cụm từ khôi phục thì tôi sẽ mất số tiền trong ví của mình.</string>
+    <!-- payment details -->
+    <string name="paymentdetails_funding_fees_label">Phí khai thác</string>
+    <string name="paymentdetails_funding_fees_desc">Phí trả cho người khai thác mạng Bitcoin để xử lý giao dịch trên chuỗi.</string>
+    <string name="paymentdetails_service_fees_label">Phí dịch vụ</string>
+    <string name="paymentdetails_service_fees_desc">Phí trả cho việc tạo kênh thanh toán mới. Điều này không phải lúc nào cũng được yêu cầu.</string>
+    <!-- lnurl -->
+    <string name="lnurl_auth_instructions">Bạn có thể đăng nhập ẩn danh và ủy quyền một hành động trên:</string>
+    <string name="lnurl_withdraw_header">
+        You can redeem funds from\n.
+        <b>%1$s</b>
+    </string>
+    <string name="lnurl_withdraw_success">
+        The withdrawal request has been sent to .\n\nIt may take some time before they send the funds. Please keep the app online in the meanwhile.
+        <b>%1$s</b>
+    </string>
+    <!-- Tor -->
+    <string name="tor_settings_subtitle">Phoenix có thể sử dụng Tor để bảo vệ IP của bạn khỏi các nút khác trong máy chủ Lightning Network và Electrum.\n\nViệc bật Tor sẽ cải thiện quyền riêng tư của bạn nhưng có thể gây ra sự cố thanh toán nếu kết nối của bạn không ổn định.</string>
+    <!-- about -->
+    <string name="about_general_content">
+        Phoenix is a Bitcoin wallet using the Lightning network for sending and receiving payments.\n\nIt is a free open source software, developed by  under the .
+        <a href="https://phoenix.acinq.co">ACINQ</a>
+        <a href="https://www.apache.org/licenses/LICENSE-2.0.txt">Giấy phép Apache 2.0</a>
+    </string>
+    <string name="about_seed_title">Bảo vệ chìa khóa của bạn</string>
+    <string name="about_seed_content">
+        This wallet is self-custodial: .\n\nThis key gives access to your money. Do not reveal it to anyone, and beware of phishing.
+        <b>bạn có toàn quyền quản lý khóa hạt giống 12 từ của ví</b>
+    </string>
+    <string name="about_rates_title">Tỷ giá hối đoái</string>
+    <string name="about_rates_content">Tỷ giá hối đoái bitcoin/fiat được lấy từ nhiều API của bên thứ ba:\n\n- Blockchain.info\n- được cung cấp bởi Coindesk.com\n- Coinbase.com\n- Bluelytics.com.ar\n- Yadio.io \n\nNhững tỷ lệ đó có thể không chính xác. Luôn kiểm tra số lượng Bitcoin thực tế trước khi gửi thanh toán.</string>
+    <!-- introduction screens -->
+    <string name="intro_welcome_title">Chào mừng!</string>
+    <string name="intro_welcome_sub1">Với Phoenix, việc gửi và nhận bitcoin thật dễ dàng và an toàn.</string>
+    <string name="intro_welcome_next_button">Kế tiếp</string>
+    <string name="intro_channels_title">Bitcoin tăng giá</string>
+    <string name="intro_channels_sub1">Phoenix sử dụng các kênh thanh toán để tạo Bitcoin nhanh chóng và riêng tư.</string>
+    <string name="intro_channels_next_button">Kế tiếp</string>
+    <string name="intro_selfcustody_title">Chìa khóa của bạn, bitcoin của bạn</string>
+    <string name="intro_selfcustody_sub1">Phoenix có quyền tự giam giữ. Bạn nắm quyền kiểm soát.</string>
+    <string name="intro_selfcustody_sub2">Bạn có thể khôi phục ví của mình bất cứ lúc nào bằng khóa bí mật của mình. Giữ nó an toàn!</string>
+    <string name="intro_selfcustody_next_button">Bắt đầu</string>
+    <!-- wallet info -->
+    <string name="walletinfo_onchain_swapin">Ví hoán đổi</string>
+    <string name="walletinfo_onchain_swapin_help">Tiền được gửi đến ví trực tuyến này sẽ tự động được chuyển đổi sang Lightning nếu các điều kiện phù hợp.</string>
+    <string name="walletinfo_onchain_swapin_help_faq_link">Xem làm thế nào nó hoạt động</string>
+    <string name="walletinfo_onchain_swapin_policy_view">Nhấn để định cấu hình</string>
+    <string name="walletinfo_onchain_swapin_empty">Không có giao dịch hoán đổi nào đang diễn ra.</string>
+    <string name="walletinfo_onchain_swapin_policy_auto_details">
+        Funds are automatically swapped to Lightning if the fee is  (can be configured).
+        <b>ít hơn %1$s</b>
+    </string>
+    <string name="walletinfo_onchain_swapin_policy_auto_details_timeout">
+        Funds not swapped  are recoverable on-chain.
+        <b>sau %1$d tháng</b>
+    </string>
+    <string name="walletinfo_onchain_swapin_policy_disabled_details">
+        Automated channels management . Funds will remain on-chain. No swap will occur.
+        <b>bị vô hiệu hóa</b>
+    </string>
+    <string name="walletinfo_onchain_swapin_last_attempt">Nỗ lực hoán đổi không thành công %1$s</string>
+    <string name="walletinfo_onchain_swapin_last_attempt_disabled">Quản lý kênh đã bị vô hiệu hóa.</string>
+    <string name="walletinfo_onchain_swapin_last_attempt_channels_init">Các kênh vẫn đang khởi tạo.</string>
+    <string name="walletinfo_onchain_swapin_timeout_1day">Hoán đổi này sẽ hết hạn sau một ngày!</string>
+    <string name="walletinfo_onchain_swapin_timeout">Hoán đổi này sẽ hết hạn sau %1$s ngày.</string>
+    <string name="walletinfo_onchain_swapin_locked_title">Hết giờ</string>
+    <string name="walletinfo_onchain_swapin_locked_description">Những khoản tiền này sẽ có sẵn từ %1$s ngày trở đi.</string>
+    <string name="walletinfo_onchain_swapin_refund_title">Tiền bị hủy</string>
+    <string name="walletinfo_onchain_swapin_refund_description">Những khoản tiền này đã không được hoán đổi kịp thời. Sử dụng bộ mô tả của ví để truy cập chúng.</string>
+    <string name="walletinfo_onchain_final_about">Ví trực tuyến có nguồn gốc từ hạt giống của bạn.\n\nVí cuối cùng là nơi tiền được gửi theo mặc định khi kênh Lightning của bạn đóng.</string>
+    <!-- settings: liquidity policy for channels creation -->
+    <string name="liquiditypolicy_instructions">Các khoản thanh toán đến đôi khi yêu cầu giao dịch trên chuỗi. Điều này không phải lúc nào cũng xảy ra, chỉ khi cần thiết.</string>
+    <string name="liquiditypolicy_fees_estimation">
+        Fees are currently estimated at around  (≈%2$s).
+        <b>%1$s</b>
+    </string>
+    <string name="liquiditypolicy_disable_label">Quản lý kênh tự động</string>
+    <string name="liquiditypolicy_disable_desc">Các khoản thanh toán đến yêu cầu hoạt động trên chuỗi sẽ bị từ chối.</string>
+    <string name="liquiditypolicy_fees_base_label">Số tiền phí tối đa</string>
+    <string name="liquiditypolicy_fees_base_help">Các khoản thanh toán có phí vượt quá giá trị đó sẽ bị từ chối.</string>
+    <string name="liquiditypolicy_fees_base_too_low">Giá trị này quá thấp.</string>
+    <string name="liquiditypolicy_fees_base_below_estimation">Dưới mức phí dự kiến. Một số khoản thanh toán có thể bị từ chối.</string>
+    <string name="liquiditypolicy_advanced_menu">Tùy chọn nâng cao</string>
+    <string name="liquiditypolicy_advanced_disable">Quản lý kênh bị vô hiệu hóa. Nó có thể được kích hoạt trong màn hình cài đặt Quản lý kênh.</string>
+    <string name="liquiditypolicy_advanced_disclaimer_header">Chú ý!</string>
+    <string name="liquiditypolicy_advanced_disclaimer_message">Màn hình này dành cho người dùng nâng cao. Không thay đổi các cài đặt này trừ khi bạn hiểu mục đích của chúng.</string>
+    <string name="liquiditypolicy_advanced_verifications_title">Xác minh bổ sung</string>
+    <string name="liquiditypolicy_advanced_fees_prop_label">Kiểm tra phần trăm</string>
+    <string name="liquiditypolicy_advanced_fees_prop_help">Kiểm tra mức phí tương ứng với số tiền nhận được. Tùy chọn này hữu ích khi kiểm tra tính chính xác cho các khoản thanh toán nhỏ.</string>
+    <string name="liquiditypolicy_advanced_overrides_title">Ghi đè chính sách</string>
+    <string name="liquiditypolicy_advanced_pay_to_open_label">Bỏ qua việc kiểm tra phí tuyệt đối cho Lightning</string>
+    <string name="liquiditypolicy_advanced_pay_to_open_help">Khi được bật, các khoản thanh toán Lightning đến sẽ bỏ qua giới hạn phí tối đa tuyệt đối. Chỉ áp dụng kiểm tra tỷ lệ phần trăm.\n\nLưu ý: nếu mức phí của bộ nhớ Bitcoin cao, các khoản thanh toán LN đến yêu cầu hoạt động trên chuỗi có thể tốn kém.</string>
+    <string name="liquiditypolicy_save_button">Lưu chính sách</string>
+    <string name="liquiditypolicy_help">
+      Phoenix allows you to receive payments on Bitcoin\'s blockchain (L1) and Bitcoin\'s Lightning layer (L2).
+      \n\n
+      - the blockchain layer (L1) is slower, and generally much more expensive (requires miner fees)
+      \n
+      - the Lightning layer (L2) is much faster, and generally much cheaper (especially for smaller payments)
+      \n\n
+      When you receive a payment on L1, Phoenix will automatically move the funds to L2  the miner fees adhere to your configured fee policy.
+      \n\n
+      Payments you receive on L2 can be received instantly and for zero fees. However, occasionally an L1 operation is also required in order to manage the L2 payment channel. This can be done automatically  the miner fees adhere to your configured fee policy.
+        <b>NẾU NHƯ</b>
+        <b>NẾU NHƯ</b>
+    </string>
+    <!-- CPFP -->
+    <string name="cpfp_title">Đẩy nhanh các giao dịch của tôi.</string>
+    <string name="cpfp_instructions">Bạn có thể thực hiện tất cả các giao dịch chưa được xác nhận của mình sử dụng mức phí cao hơn để khuyến khích các nhà khai thác ủng hộ khoản thanh toán của bạn.</string>
+    <string name="cpfp_splice_error_actual_below_user">Mức phí này thấp hơn mức phí mà các giao dịch chưa được xác nhận của bạn đang sử dụng. Sử dụng mức phí cao hơn.</string>
+    <plurals name="inappnotif_payments_rejection_overview">
+        <item quantity="one">Gần đây, khoản thanh toán đến %1$d đã bị từ chối</item>
+        <item quantity="other">%1$d khoản thanh toán đến bị từ chối gần đây</item>
+    </plurals>
+    <plurals name="inappnotif_watchtower_nominal_description">
+        <item quantity="one">Kênh %1$d đã được kiểm tra thành công trên %2$s. Không tìm thấy vấn đề.</item>
+        <item quantity="other">%1$d kênh đã được kiểm tra thành công trên %2$s. Không tìm thấy vấn đề.</item>
+    </plurals>
+</resources>
