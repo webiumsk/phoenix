@@ -39,7 +39,6 @@ struct HomeView : MVIView {
 	
 	let lastCompletedPaymentPublisher = Biz.business.paymentsManager.lastCompletedPaymentPublisher()
 	
-	let swapInWalletPublisher = Biz.business.balanceManager.swapInWalletPublisher()
 	@State var swapInWallet = Biz.business.balanceManager.swapInWalletValue()
 	
 	let swapInRejectedPublisher = Biz.swapInRejectedPublisher
@@ -120,8 +119,10 @@ struct HomeView : MVIView {
 		.onReceive(lastCompletedPaymentPublisher) {
 			lastCompletedPaymentChanged($0)
 		}
-		.onReceive(swapInWalletPublisher) {
-			swapInWalletChanged($0)
+		.task {
+			for await wallet in Biz.business.balanceManager.swapInWalletSequence() {
+				swapInWalletChanged(wallet)
+			}
 		}
 		.onReceive(swapInRejectedPublisher) {
 			swapInRejectedStateChange($0)

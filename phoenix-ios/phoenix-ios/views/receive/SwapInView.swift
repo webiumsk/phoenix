@@ -26,7 +26,6 @@ struct SwapInView: View {
 	
 	@State var activeSheet: ReceiveViewSheet? = nil
 	
-	let swapInWalletPublisher = Biz.business.balanceManager.swapInWalletPublisher()
 	@State var swapInWallet = Biz.business.balanceManager.swapInWalletValue()
 	
 	@Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -115,8 +114,10 @@ struct SwapInView: View {
 		.onAppear {
 			onAppear()
 		}
-		.onReceive(swapInWalletPublisher) {
-			swapInWalletChanged($0)
+		.task {
+			for await wallet in Biz.business.balanceManager.swapInWalletSequence() {
+				swapInWalletChanged(wallet)
+			}
 		}
 	}
 	

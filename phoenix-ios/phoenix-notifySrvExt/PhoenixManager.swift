@@ -94,7 +94,7 @@ class PhoenixManager {
 			if wasAlreadyUnlocked {
 				// The new instance (`UNNotificationServiceExtension`) needs to know the current connection state.
 				DispatchQueue.main.async {
-					let connections = business.connectionsManager.currentValue
+					let connections = self.business.connectionsManager.currentValue
 					self.connectionsChanged(connections)
 				}
 			}
@@ -195,12 +195,13 @@ class PhoenixManager {
 			return
 		}
 
-		business.connectionsManager.connectionsPublisher().sink {
-			[weak self](connections: Connections) in
-			
-			self?.connectionsChanged(connections)
-		}
-		.store(in: &cancellables)
+		cancellables.insert(
+			Task { @MainActor [business, weak self] in
+				for await connections in business.connectionsManager.connectionsSequence() {
+					self?.connectionsChanged(connections)
+				}
+			}.autoCancellable()
+		)
 		
 		let pushReceivedAt = Date()
 		business.paymentsManager.lastIncomingPaymentPublisher().sink {
@@ -218,13 +219,13 @@ class PhoenixManager {
 		}
 		.store(in: &cancellables)
 		
-		business.currencyManager.ratesPubliser().sink {
-			[weak self](rates: [ExchangeRate]) in
-			
-			assertMainThread() // var `fiatExchangeRates` should be accessed/updated only on main thread
-			self?.fiatExchangeRates = rates
-		}
-		.store(in: &cancellables)
+		cancellables.insert(
+			Task { @MainActor [business, weak self] in
+				for await rates in business.currencyManager.ratesSequence() {
+					self?.fiatExchangeRates = rates
+				}
+			}.autoCancellable()
+		)
 		
 		let seed = business.walletManager.mnemonicsToSeed(mnemonics: mnemonics, passphrase: "")
 		business.walletManager.loadWallet(seed: seed)

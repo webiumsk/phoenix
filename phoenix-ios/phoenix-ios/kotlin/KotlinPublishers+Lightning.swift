@@ -62,22 +62,10 @@ extension Lightning_kmpElectrumWatcher {
 // MARK: -
 extension Lightning_kmpNodeParams {
 	
-	fileprivate struct _Key {
-		static var nodeEventsPublisher = 0
-	}
-	
-	func nodeEventsPublisher() -> AnyPublisher<Lightning_kmpNodeEvents, Never> {
+	func nodeEventsSequence() -> AnyAsyncSequence<Lightning_kmpNodeEvents> {
 		
-		self.getSetAssociatedObject(storageKey: &_Key.nodeEventsPublisher) {
-			
-			/// Transforming from Kotlin:
-			/// `nodeEvents: SharedFlow<NodeEvents>`
-			///
-			KotlinPassthroughSubject<AnyObject>(
-				self.nodeEvents._bridgeToObjectiveC()
-			)
-			.compactMap { $0 as? Lightning_kmpNodeEvents }
-			.eraseToAnyPublisher()
-		}
+		return self.nodeEvents
+			.compactMap { $0 }
+			.eraseToAnyAsyncSequence()
 	}
 }

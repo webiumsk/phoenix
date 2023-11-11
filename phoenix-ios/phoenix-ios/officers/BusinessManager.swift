@@ -145,12 +145,13 @@ class BusinessManager {
 		log.trace("registerForNotifications()")
 		
 		// Connection status observer
-		business.connectionsManager.connectionsPublisher()
-			.sink { (connections: Connections) in
-			
-				self.connectionsChanged(connections)
-			}
-			.store(in: &cancellables)
+		cancellables.insert(
+			Task { @MainActor [self] in
+				for await connections in business.connectionsManager.connectionsSequence() {
+					connectionsChanged(connections)
+				}
+			}.autoCancellable()
+		)
 		
 		// In-flight payments observer
 		business.paymentsManager.inFlightOutgoingPaymentsPublisher()
@@ -202,18 +203,20 @@ class BusinessManager {
 			.store(in: &cancellables)
 		
 		// NodeEvents
-		business.nodeParamsManager.nodeParamsPublisher()
-			.flatMap { $0.nodeEventsPublisher() }
-			.sink { (event: Lightning_kmpNodeEvents) in
-				
-				if let rejected = event as? Lightning_kmpLiquidityEventsRejected,
-				   rejected.source == Lightning_kmpLiquidityEventsSource.onchainwallet
-				{
-					log.debug("Received Lightning_kmpLiquidityEventsRejected: \(rejected)")
-					self.swapInRejectedPublisher.value = rejected
+		cancellables.insert(
+			Task { @MainActor [self] in
+				let nodeParams = await self.business.nodeParamsManager.getNodeParams()
+				for await event in nodeParams.nodeEventsSequence() {
+					
+					if let rejected = event as? Lightning_kmpLiquidityEventsRejected,
+						rejected.source == Lightning_kmpLiquidityEventsSource.onchainwallet
+					{
+						log.debug("Received Lightning_kmpLiquidityEventsRejected: \(rejected)")
+						self.swapInRejectedPublisher.value = rejected
+					}
 				}
-			}
-			.store(in: &cancellables)
+			}.autoCancellable()
+		)
 		
 		// LiquidityEvent.Accepted is still missing.
 		// So we're simulating it by monitoring the swapIn wallet balance.
@@ -225,27 +228,19 @@ class BusinessManager {
 		// then the entire confirmed balance is consumed,
 		// and thus the confirmed balance drops to zero.
 		//
-		business.balanceManager.swapInWalletPublisher()
-			.sink { (wallet: Lightning_kmpWalletState.WalletWithConfirmations) in
-				
-				if wallet.deeplyConfirmedBalance.sat == 0 {
-					if self.swapInRejectedPublisher.value != nil {
-						log.debug("Received Lightning_kmpLiquidityEventsAccepted")
-						self.swapInRejectedPublisher.value = nil
+		cancellables.insert(
+			Task { @MainActor in
+				for await wallet in business.balanceManager.swapInWalletSequence() {
+					
+					if wallet.deeplyConfirmedBalance.sat == 0 {
+						if self.swapInRejectedPublisher.value != nil {
+							log.debug("Received Lightning_kmpLiquidityEventsAccepted")
+							self.swapInRejectedPublisher.value = nil
+						}
 					}
 				}
-			}
-			.store(in: &cancellables)
-		
-		// Monitor for unfinished "merge-channels for splicing" upgrade.
-		//
-		business.peerManager.channelsPublisher()
-			.sink { (channels: [LocalChannelInfo]) in
-				
-				let shouldMigrate = IosMigrationHelper.shared.shouldMigrateChannels(channels: channels)
-				self.canMergeChannelsForSplicingPublisher.send(shouldMigrate)
-			}
-			.store(in: &cancellables)
+			}.autoCancellable()
+		)
 		
 		// Monitor for notifySrvExt being active & connected to Peer
 		//
@@ -303,21 +298,33 @@ class BusinessManager {
 	func startTasks() {
 		log.trace("startTasks()")
 		
-		Task { @MainActor in
-			let channelsStream = self.business.peerManager.channelsPublisher().values
-			do {
-				for try await channels in channelsStream {
+		cancellables.insert(
+			// Monitor for unfinished "merge-channels for splicing" upgrade.
+			Task { @MainActor in
+				for await channels in self.business.peerManager.channelsArraySequence() {
+					let shouldMigrate = IosMigrationHelper.shared.shouldMigrateChannels(channels: channels)
+					self.canMergeChannelsForSplicingPublisher.send(shouldMigrate)
+				}
+			}.autoCancellable()
+		)
+		
+		cancellables.insert(
+			// Start watching the SwapIn wallet (once the channels are loaded from DB)
+			Task { @MainActor in
+				for await channels in self.business.peerManager.channelsArraySequence() {
 					let shouldMigrate = IosMigrationHelper.shared.shouldMigrateChannels(channels: channels)
 					if !shouldMigrate {
-						let peer = try await Biz.business.peerManager.getPeer()
-						try await peer.startWatchSwapInWallet()
+						let peer = try await self.business.peerManager.getPeer()
+						do {
+							try await peer.startWatchSwapInWallet()
+						} catch {
+							log.error("peer.startWatchSwapInWallet(): error: \(error)")
+						}
 					}
 					break
 				}
-			} catch {
-				log.error("peer.startWatchSwapInWallet(): error: \(error)")
-			}
-		} // </Task>
+			}.autoCancellable()
+		)
 	}
 	
 	// --------------------------------------------------

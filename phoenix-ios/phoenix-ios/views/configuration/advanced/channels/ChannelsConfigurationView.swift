@@ -20,21 +20,12 @@ struct ChannelsConfigurationView: View {
 	
 	@StateObject var toast = Toast()
 	
-	let channelsPublisher = Biz.business.peerManager.channelsPublisher()
 	@State var channels: [LocalChannelInfo] = []
 	
 	@ViewBuilder
 	var body: some View {
 		
 		content()
-			.sharing($sharing)
-			.frame(maxWidth: .infinity, maxHeight: .infinity)
-			.onReceive(channelsPublisher) {
-				channels = $0
-			}
-			.onDisappear {
-				onDisappear()
-			}
 			.navigationTitle(NSLocalizedString("Payment channels", comment: "Navigation bar title"))
 			.navigationBarTitleDisplayMode(.inline)
 	}
@@ -42,27 +33,45 @@ struct ChannelsConfigurationView: View {
 	@ViewBuilder
 	func content() -> some View {
 		
-		if (channels.isEmpty) {
-			NoChannelsView(
-				channels: $channels,
-				sharing: $sharing,
-				showChannelsRemoteBalance: $showChannelsRemoteBalance,
-				toast: toast
-			)
-		} else {
-			ChannelsView(
-				channels: $channels,
-				sharing: $sharing,
-				showChannelsRemoteBalance: $showChannelsRemoteBalance,
-				toast: toast
-			)
+		Group {
+			if channels.isEmpty {
+				NoChannelsView(
+					channels: $channels,
+					sharing: $sharing,
+					showChannelsRemoteBalance: $showChannelsRemoteBalance,
+					toast: toast
+				)
+			} else {
+				ChannelsView(
+					channels: $channels,
+					sharing: $sharing,
+					showChannelsRemoteBalance: $showChannelsRemoteBalance,
+					toast: toast
+				)
+			}
+		} // </Group>
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.onDisappear {
+			onDisappear()
 		}
+		.task {
+			for await channels in Biz.business.peerManager.channelsArraySequence() {
+				channelsChanged(channels)
+			}
+		}
+		.sharing($sharing)
 	}
 	
 	func onDisappear() {
 		log.trace("onDisappear()")
 		
 		Prefs.shared.showChannelsRemoteBalance = showChannelsRemoteBalance
+	}
+	
+	func channelsChanged(_ channels: [LocalChannelInfo]) {
+		log.trace("channelsChanged()")
+		
+		self.channels = channels
 	}
 }
 
