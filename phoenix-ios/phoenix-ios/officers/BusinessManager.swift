@@ -153,18 +153,19 @@ class BusinessManager {
 			}.autoCancellable()
 		)
 		
-		// In-flight payments observer
-		business.paymentsManager.inFlightOutgoingPaymentsPublisher()
-			.sink { (count: Int) in
+		cancellables.insert(
+			Task { @MainActor [self] in
+				for await count in business.paymentsManager.inFlightOutgoingPaymentsSequence() {
 				
-				log.debug("inFlightOutgoingPaymentsPublisher: count = \(count)")
-				if count > 0 {
-					self.beginLongLivedTask()
-				} else {
-					self.endLongLivedTask()
+					log.debug("inFlightOutgoingPaymentsPublisher: count = \(count)")
+					if count > 0 {
+						beginLongLivedTask()
+					} else {
+						endLongLivedTask()
+					}
 				}
-			}
-			.store(in: &cancellables)
+			}.autoCancellable()
+		)
 		
 		// Tor configuration observer
 		GroupPrefs.shared.isTorEnabledPublisher

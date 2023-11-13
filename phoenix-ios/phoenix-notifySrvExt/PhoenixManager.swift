@@ -204,20 +204,20 @@ class PhoenixManager {
 		)
 		
 		let pushReceivedAt = Date()
-		business.paymentsManager.lastIncomingPaymentPublisher().sink {
-			[weak self](payment: Lightning_kmpIncomingPayment) in
-			
-			guard
-				let paymentReceivedAt = payment.received?.receivedAtDate,
-				paymentReceivedAt > pushReceivedAt
-			else {
-				// Ignoring - this is the most recently received incomingPayment, but not a new one
-				return
-			}
-			
-			self?.didReceivePayment(payment)
-		}
-		.store(in: &cancellables)
+		cancellables.insert(
+			Task { @MainActor [business, weak self] in
+				for await payment in business.paymentsManager.lastIncomingPaymentSequence() {
+					guard
+						let paymentReceivedAt = payment.received?.receivedAtDate,
+						paymentReceivedAt > pushReceivedAt
+					else {
+						// Ignoring - this is the most recently received incomingPayment, but not a new one
+						return
+					}
+					self?.didReceivePayment(payment)
+				}
+			}.autoCancellable()
+		)
 		
 		cancellables.insert(
 			Task { @MainActor [business, weak self] in

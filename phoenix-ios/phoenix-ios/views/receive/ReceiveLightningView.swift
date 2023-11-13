@@ -59,8 +59,6 @@ struct ReceiveLightningView: View {
 	@EnvironmentObject var popoverState: PopoverState
 	@EnvironmentObject var smartModalState: SmartModalState
 	
-	let lastIncomingPaymentPublisher = Biz.business.paymentsManager.lastIncomingPaymentPublisher()
-	
 	// For the cicular buttons: [copy, share, edit]
 	enum MaxButtonWidth: Preference {}
 	let maxButtonWidthReader = GeometryPreferenceReader(
@@ -107,8 +105,10 @@ struct ReceiveLightningView: View {
 		.onChange(of: mvi.model) { newModel in
 			onModelChange(model: newModel)
 		}
-		.onReceive(lastIncomingPaymentPublisher) {
-			lastIncomingPaymentChanged($0)
+		.task {
+			for await payment in Biz.business.paymentsManager.lastIncomingPaymentSequence() {
+				lastIncomingPaymentChanged(payment)
+			}
 		}
 		.onReceive(GroupPrefs.shared.liquidityPolicyPublisher) {
 			liquidityPolicyChanged($0)
