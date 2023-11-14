@@ -1405,8 +1405,9 @@
 		7555FF73242A565900829871 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = Acinq;
 				TargetAttributes = {
 					7555FF7A242A565900829871 = {
@@ -2148,6 +2149,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = XD77LN4376;
@@ -2177,6 +2179,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = XD77LN4376;
