@@ -154,7 +154,6 @@ struct PaymentCell : View {
 					case WalletPaymentState.pendingonchain  : Image(systemName: "clock.fill")
 					case WalletPaymentState.pendingoffchain : Image(systemName: "clock.fill")
 					case WalletPaymentState.failure         : Image(systemName: "x.circle.fill")
-					default                                 : Image(systemName: "magnifyingglass.circle.fill")
 				}
 			} else {
 				Image(systemName: "magnifyingglass.circle.fill")
