@@ -23,6 +23,7 @@ fileprivate enum Key: String {
 	case showOriginalFiatAmount
 	case recentPaymentsConfig
 	case hasMergedChannelsForSplicing
+	case hasUpgradedSeedCloudBackups
 }
 
 fileprivate enum KeyDeprecated: String {
@@ -131,6 +132,11 @@ class Prefs {
 	var hasMergedChannelsForSplicing: Bool {
 		get { defaults.hasMergedChannelsForSplicing }
 		set { defaults.hasMergedChannelsForSplicing = newValue }
+	}
+	
+	var hasUpgradedSeedCloudBackups: Bool {
+		get { defaults.hasUpgradedSeedCloudBackups }
+		set { defaults.hasUpgradedSeedCloudBackups = newValue }
 	}
 	
 	// --------------------------------------------------
@@ -303,5 +309,10 @@ extension UserDefaults {
 	@objc fileprivate var hasMergedChannelsForSplicing: Bool {
 		get { bool(forKey: Key.hasMergedChannelsForSplicing.rawValue) }
 		set { set(newValue, forKey: Key.hasMergedChannelsForSplicing.rawValue) }
+	}
+	
+	@objc fileprivate var hasUpgradedSeedCloudBackups: Bool {
+		get { bool(forKey: Key.hasUpgradedSeedCloudBackups.rawValue) }
+		set { set(newValue, forKey: Key.hasUpgradedSeedCloudBackups.rawValue) }
 	}
 }
