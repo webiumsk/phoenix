@@ -1,6 +1,7 @@
 import SwiftUI
 import CloudKit
 import CircularCheckmarkProgress
+import PhoenixShared
 import os.log
 
 #if DEBUG && true
@@ -173,7 +174,7 @@ struct RecoveryPhraseList: View {
 			VStack(alignment: .leading, spacing: 35) {
 				Text(
 					"""
-					The recovery phrase (sometimes called a seed), is a list of 12 English words. \
+					The recovery phrase (sometimes called a seed), is a list of 12 words. \
 					It allows you to recover full access to your funds if needed.
 					"""
 				)
@@ -670,9 +671,22 @@ fileprivate struct SyncErrorDetails: View, ViewName {
 fileprivate struct RecoveryPhraseReveal: View {
 	
 	@Binding var isShowing: Bool
-	let recoveryPhrase: RecoveryPhrase
 	
+	let recoveryPhrase: RecoveryPhrase
+	let language: MnemonicLanguage
+	
+	@State var showCopyOptions: Bool = false
 	@State var truncationDetected: Bool = false
+	
+	@StateObject var toast = Toast()
+	
+	@Environment(\.colorScheme) var colorScheme: ColorScheme
+	
+	init(isShowing: Binding<Bool>, recoveryPhrase: RecoveryPhrase) {
+		self._isShowing = isShowing
+		self.recoveryPhrase = recoveryPhrase
+		self.language = recoveryPhrase.language ?? MnemonicLanguage.english
+	}
 	
 	func mnemonic(_ idx: Int) -> String {
 		let mnemonics = recoveryPhrase.mnemonicsArray
@@ -691,16 +705,19 @@ fileprivate struct RecoveryPhraseReveal: View {
 				}
 			}
 			
-			// (required for landscapse mode, where swipe to dismiss isn't possible)
-			closeButton()
+			header()
+			toast.view()
 		}
 	}
 	
 	@ViewBuilder
-	func closeButton() -> some View {
+	func header() -> some View {
 		
 		VStack {
-			HStack {
+			HStack(alignment: VerticalAlignment.center, spacing: 0) {
+				Text(verbatim: "\(language.flag) \(language.displayName)")
+					.font(.callout)
+					.foregroundColor(.secondary)
 				Spacer()
 				Button {
 					close()
@@ -750,6 +767,9 @@ fileprivate struct RecoveryPhraseReveal: View {
 			Spacer()
 			Spacer()
 			
+			copyButton()
+				.padding(.bottom, 6)
+
 			Text("BIP39 seed with standard BIP84 derivation path")
 				.font(.footnote)
 				.foregroundColor(.secondary)
@@ -791,8 +811,8 @@ fileprivate struct RecoveryPhraseReveal: View {
 						self.wasTruncated(visibleIdx: idx+1)
 					}
 					.padding(.bottom, 2)
-				}
-			}
+				} // </ForEach>
+			} // </VStack>
 			.padding(.trailing, 4) // boost spacing a wee bit
 			
 			Spacer()
@@ -821,8 +841,8 @@ fileprivate struct RecoveryPhraseReveal: View {
 						self.wasTruncated(visibleIdx: idx+1)
 					}
 					.padding(.bottom, 2)
-				}
-			}
+				} // </ForEach>
+			} // </VStack>
 			
 			Spacer()
 		}
@@ -854,12 +874,88 @@ fileprivate struct RecoveryPhraseReveal: View {
 		} // </HStack>
 	}
 	
+	@ViewBuilder
+	func copyButton() -> some View {
+		
+		let xprv = BusinessManager.isTestnet ? "vprv" : "zprv"
+		let xpub = BusinessManager.isTestnet ? "vpub" : "zpub"
+		
+		HStack(alignment: VerticalAlignment.center, spacing: 0) {
+			Spacer()
+				
+			Button {
+				showCopyOptions = true
+			} label: {
+				Text("Copy…").font(.title3)
+			}
+			.confirmationDialog("What would you like to copy?",
+				isPresented: $showCopyOptions,
+				titleVisibility: .automatic
+			) {
+				// Note: confirmationDialog strips all formatting from Text items.
+				// So we don't get to play with fonts or colors here.
+				Button("Recovery phrase (12 words)") {
+					copyRecoveryPhrase()
+				}
+				Button("Account extended private key (\(xprv))") {
+					copyExtPrivKey()
+				}
+				Button("Account extended public key (\(xpub))") {
+					copyExtPubKey()
+				}
+			}
+			
+			Spacer()
+		} // </HStack>
+	}
+
+	
 	func wasTruncated(visibleIdx: Int) {
 		log.trace("[RecoverySeedReveal] wasTruncated(#: \(visibleIdx))")
 		
 		DispatchQueue.main.async {
 			truncationDetected = true
 		}
+	}
+	
+	func copyRecoveryPhrase() {
+		log.trace("[RecoverySeedReveal] copyRecoveryPhrase()")
+		
+		copy(recoveryPhrase.mnemonics)
+	}
+	
+	func copyExtPrivKey() {
+		log.trace("[RecoverySeedReveal] copyExtPrivKey()")
+		
+		let xprv = Biz.business.walletManager_finalOnChainWallet_xprv(
+			mnemonics: recoveryPhrase.mnemonicsArray,
+			wordList: language.wordlist(),
+			passphrase: ""
+		)
+		if let xprv {
+			copy(xprv)
+		}
+	}
+	
+	func copyExtPubKey() {
+		log.trace("[RecoverySeedReveal] copyExtPubKey()")
+		
+		let keyManager = Biz.business.walletManager.getKeyManager()
+		if let xpub = keyManager?.finalOnChainWallet.xpub {
+			copy(xpub)
+		}
+	}
+	
+	private func copy(_ string: String) {
+		log.trace("[RecoverySeedReveal] copy()")
+		
+		UIPasteboard.general.string = string
+		AppDelegate.get().clearPasteboardOnReturnToApp = true
+		toast.pop(
+			"Pasteboard will be cleared when you return to Phoenix.",
+			colorScheme: colorScheme.opposite,
+			duration: 4.0 // seconds
+		)
 	}
 	
 	func close() {

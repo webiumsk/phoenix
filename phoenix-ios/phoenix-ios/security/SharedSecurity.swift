@@ -1,4 +1,5 @@
 import Foundation
+import PhoenixShared
 import CryptoKit
 import os.log
 
@@ -180,7 +181,10 @@ class SharedSecurity {
 			
 		} else {
 			
-			result = RecoveryPhrase(mnemonics: cleartextString)
+			result = RecoveryPhrase(
+				mnemonics: cleartextString,
+				language: MnemonicLanguage.english
+			)
 		}
 		
 		return .success(result)

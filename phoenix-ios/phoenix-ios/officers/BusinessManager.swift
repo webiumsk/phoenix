@@ -71,6 +71,10 @@ class BusinessManager {
 	///
 	public let srvExtConnectedToPeer = CurrentValueSubject<Bool, Never>(false)
 	
+	/// For creating a new wallet
+	/// 
+	public let mnemonicLanguagePublisher = CurrentValueSubject<MnemonicLanguage, Never>(MnemonicLanguage.english)
+	
 	private var walletInfo: WalletManager.WalletInfo? = nil
 	private var pushToken: String? = nil
 	private var fcmToken: String? = nil
@@ -376,8 +380,13 @@ class BusinessManager {
 			return false
 		}
 		
+		guard let language = recoveryPhrase.language else {
+			return false
+		}
+		
 		let seed = knownSeed ?? business.walletManager.mnemonicsToSeed(
 			mnemonics  : recoveryPhrase.mnemonicsArray,
+			wordList   : language.wordlist(),
 			passphrase : ""
 		)
 		let _walletInfo = business.walletManager.loadWallet(seed: seed)

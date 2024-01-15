@@ -201,7 +201,7 @@ class PhoenixManager {
 		log.trace("_connect(recoveryPhrase:)")
 		assertMainThread()
 		
-		guard let recoveryPhrase = recoveryPhrase else {
+		guard let recoveryPhrase, let language = recoveryPhrase.language else {
 			return
 		}
 
@@ -238,6 +238,7 @@ class PhoenixManager {
 		
 		let seed = business.walletManager.mnemonicsToSeed(
 			mnemonics: recoveryPhrase.mnemonicsArray,
+			wordList: language.wordlist(),
 			passphrase: ""
 		)
 		business.walletManager.loadWallet(seed: seed)
